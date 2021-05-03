@@ -30,7 +30,7 @@ def minimax(depth, isMaximizing):
                 bestMove = move
         return [minEval, bestMove]
 
-def minimax_with_pruning(depth, alpha, beta, isMaximizing):
+def minimax_with_pruning(depth, isMaximizing, alpha=-math.inf, beta=math.inf):
     bestMove = 0
     result = game_state.check_for_win()
     

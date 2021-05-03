@@ -1,7 +1,6 @@
 import game_state
 import computer
 import random
-import math
 import time
 
 end_game = { 
@@ -13,8 +12,10 @@ end_game = {
 difficulty = 1
 flip_flop = True
 
-def get_difficulty():
-    dif = int(input('Select difficulty:\nEasy = 1\nMedium = 2\nHard = 3\n'))
+def select_difficulty():
+    return int(input('Select difficulty:\nEasy=1\nMedium=2\nHard=3\n'))
+
+def set_difficulty(dif):
     global difficulty
     global flip_flop
     difficulty = dif
@@ -30,7 +31,7 @@ def computer_turn():
     moves = game_state.get_possible_moves()
     move = None
     if flip_flop:
-        move = computer.minimax_with_pruning(len(moves), -math.inf, math.inf, True)[1]
+        move = computer.minimax_with_pruning(len(moves), True)[1]
     else:
         move = moves[random.randint(0, len(moves) - 1)]
     if difficulty == 2:
@@ -42,12 +43,32 @@ def player_turn():
     moves = game_state.get_possible_moves()
     selection = -1
     while selection not in moves:
-        selection = int(input()) - 1
+        selection = int(input())
+        
+        if selection == 1:
+            selection = [0, 0]
+        if selection == 2:
+            selection = [0, 1]
+        if selection == 3:
+            selection = [0, 2]
+        if selection == 4:
+            selection = [1, 0]
+        if selection == 5:
+            selection = [1, 1]
+        if selection == 6:
+            selection = [1, 2]
+        if selection == 7:
+            selection = [2, 0]
+        if selection == 8:
+            selection = [2, 1]
+        if selection == 9:
+            selection = [2, 2]
+            
     game_state.update_board(selection, 'hn')
     game_state.show_game_state()
 
-def game():
-    get_difficulty()
+def game(vs_AI, dif):
+    set_difficulty(dif)
     while(True):
         game_state.show_game_state()
         player_turn()
@@ -59,7 +80,7 @@ def game():
         result = game_state.check_for_win()
         if result != None: return end_game[result]
 
-result = game()
+result = game(True, select_difficulty())
 if result == 'TIE':
     print(result)
 else: print(result + ' WINS!!!')
